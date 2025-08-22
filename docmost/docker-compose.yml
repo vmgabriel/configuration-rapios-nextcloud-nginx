@@ -1,0 +1,42 @@
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - internal
+
+  postgres:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=docmost
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=docmost
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - internal
+    env_file: ".env"
+
+  docmost:
+    image: docmost/docmost:latest
+    restart: unless-stopped
+    environment:
+      - ALLOW_SIGNUP=true
+      - DATABASE_URL=postgresql://docmost:${POSTGRES_PASSWORD}@postgres/docmost
+      - REDIS_URL=redis://redis
+      - APP_SECRET=${APP_SECRET}
+    ports:
+      - "8081:3000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - internal
+    env_file: ".env"
+
+networks:
+  internal:
+    driver: bridge
