@@ -1,0 +1,38 @@
+services:
+  maria:
+    image: mariadb:10.6
+    restart: unless-stopped
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - ./data/nextcloud-db:/var/lib/mysql
+      - ./initdb:/docker-entrypoint-initdb.d
+    networks:
+      - internal
+    env_file: ".env"
+
+  nextcloud:
+    image: nextcloud:28-apache
+    restart: unless-stopped
+    volumes:
+      - ./data/nextcloud:/var/www/html
+    ports:
+      - "8080:80"
+    environment:
+      - MYSQL_HOST=maria
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    depends_on:
+      - maria
+    networks:
+      - internal
+    env_file: ".env"
+
+networks:
+  internal:
+    driver: bridge
