@@ -1,0 +1,52 @@
+services:
+  app:
+    image: jez500/pricebuddy:latest
+    ports:
+      - 8087:80
+    volumes:
+      - storage:/app/storage
+    environment:
+      DB_HOST: database
+      DB_USERNAME: pricebuddy
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_DATABASE: pricebuddy
+      APP_USER_EMAIL: ${APP_USER_EMAIL}
+      APP_USER_PASSWORD: ${APP_USER_PASSWORD}
+      SCRAPER_BASE_URL: 'scraper:3000'
+    depends_on:
+      - database
+    networks:
+      - default
+    env_file: "my.env"
+
+  database:
+    image: mysql:8.2
+    environment:
+      MYSQL_DATABASE: pricebuddy
+      MYSQL_USER: pricebuddy
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - default
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 1m
+    env_file: "my.env"
+
+
+  scraper:
+    image: amerkurev/scrapper:latest
+    networks:
+      - default
+
+volumes:
+  storage:
+  database:
+
+networks:
+  default:
