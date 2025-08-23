@@ -24,3 +24,10 @@ echo "Run komga"
 cd komga
 docker compose up --build -d
 cd ..
+
+echo "Run PriceBuddy"
+cd pricebuddy
+chmod +x gen_env.sh
+sh ./gen_env.sh
+docker compose up --build -d
+cd ..
