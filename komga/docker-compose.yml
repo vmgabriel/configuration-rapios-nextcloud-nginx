@@ -1,0 +1,19 @@
+services:
+  komga:
+    image: gotson/komga:latest
+    container_name: komga
+    restart: unless-stopped
+    user: "1000:1000"
+    ports:
+      - "8084:25600"
+    volumes:
+      - ./data/komga/config:/config
+      - ./data/komga/books:/books
+    environment:
+      - TZ=America/Bogota
+    networks:
+      - komga_net
+
+networks:
+  komga_net:
+    driver: bridge
