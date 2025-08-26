@@ -26,7 +26,7 @@ services:
     environment:
       - ALLOW_SIGNUP=true
       - DATABASE_URL=postgresql://docmost:${POSTGRES_PASSWORD}@postgres/docmost
-      - REDIS_URL=redis://redis
+      - REDIS_URL=redis://redis:6379
       - APP_SECRET=${APP_SECRET}
     ports:
       - "8081:3000"
