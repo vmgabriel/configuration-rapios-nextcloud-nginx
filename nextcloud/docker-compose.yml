@@ -20,6 +20,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./data/nextcloud:/var/www/html
+      - ../books:/var/www/books
     ports:
       - "8080:80"
     environment:
