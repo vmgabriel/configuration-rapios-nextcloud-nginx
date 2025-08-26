@@ -9,6 +9,7 @@ services:
     volumes:
       - ./data/komga/config:/config
       - ./data/komga/books:/books
+      - ../books:/nextcloud
     environment:
       - TZ=America/Bogota
     networks:
