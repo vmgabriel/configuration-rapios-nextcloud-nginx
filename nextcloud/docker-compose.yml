@@ -28,6 +28,7 @@ services:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - NEXTCLOUD_TRUSTED_DOMAINS="drive.ghostlabhomecenter.work"
     depends_on:
       - maria
     networks:
