@@ -1,0 +1,16 @@
+services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/caddy_data
+      - caddy_config:/caddy_config
+
+
+volumes:
+  caddy_data:
+  caddy_config:

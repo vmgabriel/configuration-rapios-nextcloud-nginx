@@ -1,0 +1,31 @@
+ghostlabhomecenter.work {
+    reverse_proxy 192.168.0.6:8000
+}
+
+
+drive.ghostlabhomecenter.work {
+    redir /.well-known/carddav /remote.php/dav 301
+    redir /.well-known/caldav /remote.php/dav 301
+    
+    reverse_proxy 192.168.0.6:8080
+}
+
+
+notion.ghostlabhomecenter.work {
+    reverse_proxy 192.168.0.6:8081
+}
+
+
+pocket.ghostlabhomecenter.work {
+    reverse_proxy 192.168.0.6:8083
+}
+
+
+calibre.ghostlabhomecenter.work {
+    reverse_proxy 192.168.0.6:8084
+}
+
+
+camel.ghostlabhomecenter.work {
+    reverse_proxy 192.168.0.6:8087
+}
